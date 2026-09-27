@@ -102,7 +102,7 @@ def render(picks: list[dict]) -> str:
     if latest:
         status = "결과 대기" if latest.get("exit_date") is None else f"{latest['exit_date'][5:]} 시가 매도 결과"
         parts.append(f"<section><h2>{e(latest['bar_date'][5:])} 추천 <small class='muted'>{e(status)}</small></h2>")
-        parts.append("<table><thead><tr><th>종목</th><th>매수가</th><th>기대</th><th>매도가</th><th>실현</th></tr></thead><tbody>")
+        parts.append("<table><thead><tr><th>종목</th><th>매수</th><th>기대</th><th>매도</th><th>실현</th></tr></thead><tbody>")
         for p in latest["picks"]:
             parts.append(
                 f"<tr><td><b>{e(p['name'])}</b><br><small class='muted'>{e(p['code'])} · {e(p['reasons'])}</small></td>"
@@ -111,7 +111,7 @@ def render(picks: list[dict]) -> str:
         parts.append("</tbody></table>")
         ho = latest.get("holdout", {})
         if ho:
-            parts.append(f"<p class='muted'>모델 검증 (최근 {ho.get('days')}거래일) 비용 후 일평균 {pct(ho.get('pick_ret'))} 승률 {ho.get('win_days', 0):.0%}</p>")
+            parts.append(f"<p class='muted'>모델 검증 최근 {ho.get('days')}거래일 · 비용 후 일평균 {pct(ho.get('pick_ret'))} · 승률 {ho.get('win_days', 0):.0%}</p>")
         parts.append("</section>")
 
     # 날짜별 기록

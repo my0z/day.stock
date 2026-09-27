@@ -42,16 +42,15 @@ jobs:
           git add surge_data site
           git commit -m "surge picks $(TZ=Asia/Seoul date +%Y%m%d-%H%M)" || exit 0
           for i in 1 2 3; do git pull --rebase origin "$GITHUB_REF_NAME" && git push && break; sleep 3; done
+      # Pages 는 저장소 설정에서 Source 를 GitHub Actions 로 한 번 켜 둬야 한다. 안 켜져 있어도 추천은 실패하지 않는다
       - name: Pages 설정
+        id: pages
+        continue-on-error: true
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - name: 커스텀 도메인
-        run: gh api -X PUT "repos/$GITHUB_REPOSITORY/pages" -f cname=ss.usb.kr -f https_enforced=false || echo "도메인 설정 실패 (수동 설정 필요)"
-        env:
-          GH_TOKEN: ${{ github.token }}
       - uses: actions/upload-pages-artifact@v3
+        if: steps.pages.outcome == 'success'
         with:
           path: site
       - id: deploy
+        if: steps.pages.outcome == 'success'
         uses: actions/deploy-pages@v4
