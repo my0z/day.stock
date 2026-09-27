@@ -14,7 +14,7 @@
    - 점검: 상한가 도달 / 거래대금 10억 미만 / 스팩 / 우선주 제외. 최근 60일 홀드아웃 적중률 계산
    - `surge_data/picks/YYYYMMDD.json` 과 오늘 봉 스냅샷 `surge_data/daily/YYYYMMDD.csv` 를 커밋
 3. 세션이 결과를 다시 점검한 뒤 말머리 `[종목 추천]` 으로 카카오톡을 보낸다. 휴장일은 보내지 않는다
-4. `python -m surge.site` 가 `site/index.html` 을 만들고 GitHub Pages 로 배포한다 -> https://ss.usb.kr (추천 · 다음 거래일 시가 기준 실현 수익 · 누적)
+4. `python -m surge.site` 가 `site/public/index.html` 을 만들고 Cloudflare Workers (정적 에셋) 로 배포한다 -> https://ss.usb.kr (추천 · 다음 거래일 시가 기준 실현 수익 · 누적). 저장소 비밀 `CLOUDFLARE_API_TOKEN` 이 필요하다
 
 ## 설치와 실행
 
@@ -31,6 +31,6 @@ python -m surge.research         # 추천 기준 비교 (3년 패널 워크포�
 - `surge/features.py` 차트와 수급 피처
 - `surge/model.py` 학습기 (익일 시가 수익률 회귀)
 - `surge/live.py` 장중 추천 실행과 점검과 카톡 문구 생성
-- `surge/site.py` 정적 사이트 생성 (`site/index.html`)
+- `surge/site.py` 정적 사이트 생성 (`site/public/index.html`) · `site/wrangler.jsonc` Cloudflare 배포 설정
 - `surge/research.py` 추천 기준 비교 연구
 - `surge_data/picks/` 날짜별 추천 결과 · `surge_data/daily/` 당일 시세 스냅샷 · `surge_data/history/` 수급 데이터

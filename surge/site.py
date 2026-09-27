@@ -17,7 +17,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "surge_data"
-OUT = ROOT / "site" / "index.html"
+OUT = ROOT / "site" / "public" / "index.html"
 KST = ZoneInfo("Asia/Seoul")
 COST = 0.002
 

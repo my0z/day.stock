@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "daystock",
+  "compatibility_date": "2026-09-20",
+  "workers_dev": true,
+  // Custom Domain 이 DNS 레코드를 만든다. htaccess 워커의 *.usb.kr/* route 보다 구체적인 route 를 따로 걸어 이 워커가 받게 한다
+  "routes": [
+    { "pattern": "ss.usb.kr", "custom_domain": true },
+    { "pattern": "ss.usb.kr/*", "zone_name": "usb.kr" }
+  ],
+  "assets": { "directory": "./public" },
+  "observability": { "enabled": true }
+}
