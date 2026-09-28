@@ -25,8 +25,14 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install pandas pyarrow numpy scikit-learn requests
-      - name: 추천 실행 (run_request 가 바뀐 경우만)
-        if: contains(github.event.head_commit.modified, 'surge/run_request.txt') || contains(github.event.head_commit.added, 'surge/run_request.txt') || github.event_name == 'workflow_dispatch'
+      - name: 추천 실행 여부 (run_request 가 바뀐 커밋이거나 수동 실행일 때만)
+        id: want
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ] || git show --name-only --format= HEAD | grep -q '^surge/run_request.txt$'; then
+            echo run=1 >> "$GITHUB_OUTPUT"
+          fi
+      - name: 추천 실행
+        if: steps.want.outputs.run == '1'
         run: python -m surge.live $(grep -q force surge/run_request.txt && echo --force)
       - name: 사이트 생성
         run: python -m surge.site
